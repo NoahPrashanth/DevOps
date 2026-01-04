@@ -1,0 +1,59 @@
+Development + Operation = DevOps
+
+Team in the company:
+1. Functional Team = Write code, run and test
+2. Testing Team = Integeration, Penetration...
+3. Deployment Team = Build, Infrastructure and Delivery
+
+To Achieve all these we use "SDLC" - Software Development Life Cycle
+
+SDLC Stages
+	1. Requirment Gathering
+	2. Analysis
+	3. Design
+	4. Develop
+	5. Test
+	6. Deploy & Delivery
+	7. Maintainance & Enhancements
+
+SDLC Types
+	1. Waterfall
+	2. Agile
+
+Waterfall model:
+	-> Linear Model
+	-> Next Phase begins after previous phase
+
+Waterfall Advantages:
+	-> Small scale
+	-> Fixed Requirment
+	-> Fixed Budget
+
+Waterfall Disadvantages:
+	-> No client interaction
+	-> Unable to shift to previous stage
+
+
+Agile model:
+	-> Iterative model
+	-> Split into phases(sprint)
+
+Agile Advantages:
+	-> Easy client Interaction
+	-> No Fixed Requirment
+	-> No Fixed Requirment
+	-> Fast Delivery
+
+Agile Disadvantages:
+	-> Not suitable for small projects
+
+
+
+ When all the process is automated except deployment -> Continous Delivery
+ When deployment is also automated -> Continous Deployment
+
+
+
+Push  ->  Pull  ->  Test  ->  Build  ->  Deploy
+  |                   |
+Develope  <-  Feedback
