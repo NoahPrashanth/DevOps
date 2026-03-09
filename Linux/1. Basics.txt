@@ -1,0 +1,55 @@
+ To Deploy an application in the server we need an Operating System. The OS we use to Deploy is "LINUX".
+Why?
+ 1. Multiple user can access same time
+ 2. Open Source
+ 3. Fast
+ 4. Secured
+
+We can use this by 
+ 1. Installing in a System
+ 2. By using a Virtualization tool Eg: OracleVirtualBox
+ 3. By Using AWS EC2
+
+We can go by using EC2 in AWS
+
+	-> Create an EC2 instance with key and value pair
+	-> Connect using putty
+putty how?
+	Open putty gen -> load .pem file -> save private key -> open putty -> paste public ip -> SSH -> Auth -> Credentials -> Browse private key -> load .ppk file -> connect -> accept -> Enter username: ubuntu
+
+There are totally 3 types of files in Linux:
+	1. File
+	2. Directory
+	3. Linking file
+
+Linux Basic commands:
+--------------------
+touch ____ 	-> Create a file only
+cat > _____ 	-> Create a file and add contents to it
+cat >> ____ 	-> Append contents to a file
+ctrl + d 	-> Save a file
+cat _____ 	-> Display the file contents
+rm _____	-> Delete a file
+
+mkdir _____	-> Create a folder
+rmdir _____	-> Delete a empty folder
+rm -r _____	-> Delete a non-empty folder
+
+cd /path/loc 	-> Change to a paricular location
+cd ..		-> Get back to previous location
+
+ls 		-> List files
+clear 		-> Clear screen
+history		-> Gives the commands history
+whoami 		-> Displays the current user
+pwd 		-> Present working directory
+
+List Commands:
+-------------
+ls 	-> List files
+ls parameters
+	1. -r = List reverse (z-a)
+	2. -l = Longlisting files
+	3. -t = Recent files
+	4. -R = All files including sub-folders
+	5. -i = list with inode 

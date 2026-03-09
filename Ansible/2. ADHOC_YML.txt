@@ -1,0 +1,96 @@
+ansible all -m ping
+ansible all -m ping -o => output in single line
+ansible all -m shell -a date => date
+ansible all -m shell -a 'mount' => mount
+ansible all -m shell -a uptime => uptime
+ansible-doc -l => all modules in ansible
+ansible-doc shell => shell
+ansible dbservers -a "df -h"
+
+-----------------------------------------------------------------
+
+ansible all -m shell -a "git --version"
+ansible all -m shell -b -a "yum install git -y"
+ansible all -m shell -b -a "name=git state=present"
+ansible all -m shell -b -a "name=git state=latest"
+ansible all -m shell -b -a "name=git state=absent"
+
+----------------------------------------------------------------
+
+ansible all -b -m yum -a "name=httpd state=present"
+ansible all -b -m yum -a "name=httpd state=latest"
+ansible all -b -m yum -a "name=httpd state=absent"
+ansible all -m copy -a "src="index.html dest=/var/www/html/index.html"
+start httpd service
+ansible all -b -m service -a "name=httpd state=started"
+ansible all -b -m shell -a "service httpd start"
+
+----------------------------------------------------------------
+
+
+Playbook To Ping All Host Nodes
+-------------------------------
+
+- hosts: all
+  gather_facts: no
+  remote_user: anisble
+  tasks:
+   - name : Test connection
+     ping:
+     remote_user: ansible
+
+
+How to execute?
+
+ansible-playbook <playbook_name>.yml 
+
+arguemnts:
+	-vvv
+	--syntax-check
+	--list-hosts
+	--step
+	--help
+	--extra-vars
+	
+
+
+Host a static site
+------------------
+
+---
+
+- hosts: all
+  become: true
+  tasks:
+   - name: Install Httpd
+     yum:
+      name: httpd
+      state: present
+   - name: Copy index.html
+     copy:
+        src: index.html
+        dest: /var/www/html/index.html
+   - name: Start Http Server
+     service:
+       name: httpd
+       state: started
+
+...
+
+
+
+Install multiple softwares
+--------------------------
+
+
+---
+
+- hosts: all
+  tasks:
+  - name: install softwares 
+    yum:
+	  name: ['wget', 'zip', 'unzip']
+	  state: present
+
+...
+

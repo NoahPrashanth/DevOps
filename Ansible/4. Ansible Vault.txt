@@ -1,0 +1,21 @@
+Ansible Vault
+-------------
+
+For the security like encryting and decrypting the playbook
+
+ansible-vault create <filename>.yml
+ansible-vault encrypt <filename>.yml
+ansible-vault view <filename>.yml
+ansible-vault edit <filename>.yml
+ansible-vault decrypt <filename>.yml
+ansible-vault rekey <filename>.yml -> update vault password
+
+Note: we use vault password for all the above actions after encrypting and to execute we need that password
+
+ansible-playbook <filename>.yml --ask-vault-pass
+
+You can store vault password in a file and you can give that file as input to execute playbook
+
+vi valutpass
+ansible-playbook <filename>.yml --vault-password-file=~/vaultpass
+

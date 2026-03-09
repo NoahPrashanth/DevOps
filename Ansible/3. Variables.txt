@@ -1,0 +1,77 @@
+Variables
+---------
+
+
+-> We can pass variable value in run time
+
+- hosts: all
+  become: true
+  tasks:
+   - name: Install Httpd
+     yum:
+      name: "{{package_name}}"
+      state: present
+   - name: Copy index.html
+     copy:
+        src: index.html
+        dest: /var/www/html/index.html
+   - name: Start Http Server
+     service:
+       name: "{{package_name}}"
+       state: started
+
+
+$ ansible-playbook filename.yml --extra-vars package_name=httpd
+
+------------------------------------------------------------------
+
+
+-> we can define variables with in the playbook
+
+
+---
+
+- hosts: all
+  become: true
+  vars: 
+	package_name: httpd
+  tasks:
+   - name: Install Httpd
+     yum:
+      name: "{{package_name}}"
+      state: present
+   - name: Copy index.html
+     template:
+        src: index.html
+        dest: /var/www/html/index.html
+   - name: Start Http Server
+     service:
+       name: "{{package_name}}"
+       state: started
+
+
+------------------------------------------------------------------
+
+Group Variables
+---------------
+
+-> group vars files should be created at host inventory location(/etc/ansible)
+
+Syntax: /etc/ansible/group_vars/<groupName>.yml
+Ex    : group_vars/webservers.yml
+
+$ sudo mkdir /etc/ansible/group_vars
+$ sudo vi /etc/ansible/group_vars/all.yml
+
+
+------------------------------------------------------------------
+
+
+Host Variables
+--------------
+
+
+$ sudo mkdir /etc/ansible/host_vars
+$ sudo vi /etc/ansible/host_vars/<ip or host_name>.yml
+
+

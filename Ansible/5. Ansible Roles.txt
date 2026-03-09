@@ -1,0 +1,116 @@
+Ansible Roles
+-------------
+
+	By adding more functionality to your playbooks, they can become difficult to maintain 
+	So, Anisible roles is used to  structure Ansible configuration in a reusable format
+	It breaks down a complex playbook into separate, smaller chunks
+	They can be coordinated by a central entry point
+	By using "ansible-galaxy" we create a Ansible roles
+
+
+sudo su ansible	
+cd /home/ansible
+mkdir roles
+ansible-galaxy init roles/apache
+
+
+Roles Diresctory has:
+1. tasks – contains the main list of tasks to be executed by the role.
+
+2. handlers – contains handlers, which may be used by this role or even anywhere outside this role.
+
+3. defaults – default variables for the role.
+
+4. vars – other variables for the role. Vars has the higher priority than defaults.
+
+5. files – contains files required to transfer or deployed to the target machines via this role.
+
+6. templates – contains templates which can be deployed via this role.
+
+7. meta – defines some data / information about this role (author, dependency, versions, examples, etc,.)
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+
+Task:
+
+
+---
+- hosts: all
+  become: true
+  tasks:
+   - name: Install Httpd
+     yum:
+      name: httpd
+      state: present
+   - name: Copy index.html
+     template:
+        src: index.html
+        dest: /var/www/html/index.html
+   - name: Start Http Server
+     service:
+       name: httpd
+       state: started
+...
+
+Create a role for the above yaml of Apache Web server:
+
+
+cd roles/apache
+
+1. Tasks
+-----------
+Edit main.yml available in the tasks folder to define the tasks to be executed.
+
+$ vi tasks/main.yml
+
+---
+# tasks file for roles/apache
+- name: install httpd
+  yum:
+   name: httpd
+   state: present
+- name: Copy index.html
+  copy:
+    src=index.html
+    dest=/var/www/html/
+  notify:
+  - restart apache
+- name: restart apache
+  service:
+   name=httpd
+   state=restarted
+
+
+2. Files
+-----------
+-> Copy required files into files directory or create index.html file with content
+
+
+3. Handlers
+-----------
+Edit handlers main.yml to restart the server when there is a change. Because we have already defined it in the tasks with notify option. Use the same name “restart apache” within the main.yml file as below.
+
+$ cat handlers/main.yml
+
+- name: restart apache
+  service:
+   name: httpd
+   state: restarted
+
+
+We have got all the required files for Apache roles. Lets apply this role into the ansible playbook “runsetup.yml” as below to deploy it on the client nodes.
+
+$ cat /home/ansible/runsetup.yml
+
+---
+- hosts: all
+  become: true
+  roles:
+   - apache
+
+...
+
+-> Execute playbook which contains apache role
+
+	$ ansible-playbook runsetup.yml

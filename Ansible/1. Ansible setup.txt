@@ -1,0 +1,47 @@
+Ansible
+
+Create setup
+------------
+sudo useradd ansible
+sudo passwd ansible (Noah@123456789)
+sudo visudo -> ansible ALL=(ALL) NOPASSWD: ALL
+sudo vi /etc/ssh/sshd_config
+	-> comment PasswordAuthentication no
+	-> un-comment PasswordAuthentication yes
+sudo service sshd restart
+
+
+Install Ansible
+---------------
+sudo su ansible
+sudo yum install python3 -y
+sudo yum install python-pip -y
+pip3 install ansible --user
+sudo mkdir /etc/ansible
+sudo vi /etc/ansible/hosts
+
+	[webserver]
+	ip1 ansible_user=ansible ansible_password=password
+	ip2 ansible_user=ansible ansible_password=password
+
+	[dbserver]
+	ip1 ansible_user=ansible ansible_password=password
+	ip2 ansible_user=ansible ansible_password=password
+
+ansible all -m ping
+Note: we need sshpass to connect so,
+
+sudo yum install sshpass
+ansible all -m ping
+
+
+
+Note: The Above approach is not safe so
+	1. Generate SSH key in control Node
+	2. Copy in Manage node
+
+ssh-keygen
+ssh-copy-id ansible@<Host-Private-IP>
+
+Now ping it 
+

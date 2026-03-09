@@ -1,0 +1,46 @@
+Handlers -> Used to notify a task to other
+Tags -> Used to specify a name to a task so that we can exexute only that particular task
+
+
+Eg:
+
+---
+
+- hosts: all
+  become: true
+  gather_facts: no
+  vars:
+    package_name: httpd
+  tasks: 
+    - name: install httpd
+      yum:
+        name: "{{package_name}}"
+        state: present
+    - name: Copy index.html
+      copy:
+        src: index.html
+        dest: /var/www/html/
+      notify:
+        Start Httpd Server
+      tags: 
+        - copy
+    - name: debug message
+      msg: Copy completed
+      tags: 
+        - debug
+        - install
+      handlers: 
+    - name: Start Httpd Server
+      service:
+        name: {{package_name}}
+        state: started
+
+
+
+$ ansible-playbook filename.yml --list-tags
+
+$ ansible-playbook filename.yml --tags "install"
+
+$ ansible-playbook filename.yml --tags "debug,copy"
+
+$ ansible-playbook filename.yml --skip-tags

@@ -1,0 +1,174 @@
+    1  yum install wget unzip vim -y
+    2  yum install wget unzip vim -y
+    3  sudo yum install -y yum-utils shadow-utils
+    4  sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+    5  sudo yum -y install terraform
+    6  history
+    7  terraform -v
+    8  mkdir terra1
+    9  cd terra1
+   10  vi Tf1.tf
+   11  terraform init
+   12  vi Tf1.tf
+   13  terraform init
+   14  terraform fmt
+   15  terraform validate
+   16  terraform apply
+   17  terraform destroy -auto-aprove
+   18  terraform destroy --auto-aprove
+   19  terraform destroy -auto--aprove
+   20  terraform destroy
+   21  history
+
+
+
+provider "aws" {
+  region     = "ap-south-1"
+  access_key = ""
+  secret_key = ""
+}
+
+resource "aws_instance" "AWSServer" {
+  ami             = ""
+  instance_type   = "t2.micro"
+  key_name        = ""
+  security_groups = [""]
+  tags = {
+    Name = "Terrafrom Server"
+  }
+}
+
+
+-----------------------------------------------------
+
+vi vars.tf
+
+variable "ami"{
+ description="AMI value"
+ default = "ami-0144277607031eca2"
+}
+
+variable "instance_type"{
+   description="Amazon Instance Type"
+   default = "t2.micro"
+}
+
+variable "instances_count"{
+        description="Total No.of Instances"
+        default = "2"
+}
+
+
+$ vi main.tf
+
+provider "aws" {
+  region = "ap-south-1"
+  access_key = ""
+  secret_key = ""
+}
+
+resource "aws_instance" "AWSServer" {
+  count="${vars.instances_count}"
+  ami = "${vars.ami}"
+  instance_type = "${vars.instance_type}"
+  key_name = "linux"
+  security_groups = ["launch-wizard-1"]
+  tags = {
+   Name = "EC2 VM - ${count.index}"
+  }
+}
+
+terraform apply -var instances_count="3"
+
+
+-----------------------------------------------------
+
+
+
+vi httpdscript.sh
+
+#!/bin/bash
+sudo su
+yum install httpd -y
+cd /var/www/html
+echo "<html><h1>Hello Noah</h1></html>" > index.html
+service httpd start
+
+chmod u+x httpdscript.sh
+
+vi main.tf
+
+provider "aws" {
+  region = "ap-south-1"
+  access_key = ""
+  secret_key = ""
+}
+
+resource "aws_instance" "AWSServer" {
+  ami = "ami-0144277607031eca2"
+  instance_type = "t2.micro"
+  key_name = "Noah"
+  security_groups = ["NoahSecurityGroup"]
+  user_data = "${file("httpdscript.sh")}"
+  tags = {
+   Name = "Terrafrom Httpd Server"
+  }
+}
+
+
+----------------------------------------------------
+
+
+provider "aws"{
+  region = "ap-south-1"
+  access_key = ""
+  secret_key = ""
+}
+
+resource "aws_s3_bucket" "noahbucket"{
+
+bucket = "noahbucket"
+acl="private"
+
+versionining{
+	enabled = true
+}
+
+ tags = {
+   Name = "Noah s3 bucket"
+ }
+}
+
+
+
+----------------------------------------------------
+
+
+provider "aws"{
+  region = "ap-south-1"
+  access_key = "your-access-key"
+  secret_key = "your-secret-key"
+}
+
+resource "aws_db_instance" "default" {
+  allocated_storage     = 100
+  engine              	= "mysql"
+  engine_version        = "5.7"
+  instance_class        = "db.t3.micro"
+  name                  = "NoahDB"
+  username              = "noah"
+  password              = "noahdevops"
+  parameter_group_name  = "default.mysql5.7"
+  skip_final_snapshot   = true
+}
+
+
+
+Note: Can Store the acess and scret key in envirmnment variables
+
+$ export AWS_ACCESS_KEY_ID=""
+$ export AWS_SECRET_ACCESS_KEY=""
+
+
+
+

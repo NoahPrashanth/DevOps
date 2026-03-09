@@ -1,0 +1,25 @@
+ We need to set up infrastructure to expose the application to public. Infrastructure contains
+	1. OS
+	2. Hardware
+	3. Network & Security
+	4. Electricity & Backup
+	5. Administrator
+	6. Computer
+	7. Server
+	9. Server rack
+	10. Storage room
+	11. Air Conditioner
+	12. Security Guard
+ To have all these manualy it will be costly so we get it from a cloud provider thorugh internet for rent. Infrastructire through net is known as cloud computing. AWS provides cloud computing in Pay-as-you-go model.
+
+AWS
+ -> Amazon Web Service
+ -> Since 2006
+ -> Pay-as-you-go model
+ -> Services Eg:
+	EC2, S3, RDS, EBS, Route 53, VPC, SNS, Dynamo DB, IAM, Cloudfront, LBR, BeanStalk etc.
+ 
+
+How AWS provide Global Infrastructure:
+By 1. Regions
+   2. Availabilty Zones

@@ -1,0 +1,140 @@
+Windows in EC2:
+---------------
+1. Root volume: 30GB
+2. Protocol   :	RDP
+3. Port	      : 3389
+4. Connect by : RDP
+
+How to connect using RDP:
+	EC2 -> connect -> RDP -> get password(.pem) -> RDP -> enter DSN/IP and username -> connect
+
+---------------------------------------------------------
+
+Linux in EC2:
+-------------
+1. Root volume: 8GB
+2. Protocol   :	SSH
+3. Port	      : 22
+4. Connect by : Putty/mobaxterm
+
+How to connect using Mobaxterm:
+	session -> SSH -> ip+name -> .pem file
+
+
+Deploy a static website in EC2:
+commands:
+
+sudo su
+yum update -y
+yum install httpd -y
+cd /var/www/html
+echo "Hello world" > index.html
+service httpd start
+
+
+EC2 Families:
+------------
+	-> They are like hardware configurations
+	-> There are more families like t3, c1, a1, nitro etc..
+
+EC2 Instance Types:
+-------------------
+
+1. On Demand Instances
+	-> Hourly fixed price
+	-> pay as you go
+2. Reserved Instances
+	-> Long term(1-3 years)
+	-> upto 75% discount
+3. Spot Instance
+	-> Auction
+4. Dedicated Host
+	-> Dedicated Infrastructure
+	-> High cost
+
+EC2 Images:
+----------
+ Images are like a preconfiugured system which are used to avoid manual repated configurations of EC2 instance. We can create our own image, but delete if not in use.
+
+	-> Regional Specific
+	-> It will be public
+	-> Need to pay for it
+	-> Reduce manual efforts and time in repetitive configurations.
+
+Amazon EBS volume:
+------------------
+	-> Elastic Block Store
+	-> Like a Hard disk for EC2
+	-> Maximum 16Tb storage available
+	-> Can be attached and detached
+	-> Data saved here only will be permanent
+	-> Availabilty Zone specific
+	-> One volume can be attached to only one EC2 except "Provisioned IOPS 2" with max upto 16 nitro family EC2s
+
+There are 2 types of volumes
+	1. Root volume 
+	2. Additional volume
+
+Volume Types:
+	1. General Standard Volume SSD -> default
+	2. Provisioned IOPS SSD -> High performance
+	3. ThroughPut Optimzed HDD -> Big Data Ware house
+	4. Cold HDD -> Less frequently accessed data
+	5. Magnetic -> Legacy
+
+Note: EC2 volumes can be scalable and flexible
+
+
+EBS Exercise:
+1. Create a Additional volume in one AZ
+2. Attach and mount it to one EC2
+3. Save some data into it
+4. Detach that volume from that instance
+5. Terminate the instance
+6. Create another EC2 instance
+7. Attach and mount that volume to the new EC2
+8. Check the data
+
+Solution commands
+lsblk -> list attached volumes
+sudo file -s /dev/xvdf -> Check data in volume
+sudo mke2fs -j /dev/xvdf -> Format the volume
+sudo su -> Switch to super user
+sudo mkdir /addvl -> Create a dir in root folder
+sudo mount /dev/xvdf /addvl -> mount the new dir to the additional volume
+df -h -> check mounts
+
+Go to that directory "/addvl" and save some data.
+Then detach, terminate then again attach in another EC2 and check.
+
+Note: Root volume contains the OS. If we delete the root volume all data will be lost.
+
+
+EBS Snapshot:
+-------------
+	-> point in time copy
+	-> volume's backup (Incremental backup)
+	-> created from volume
+	-> volume <-> snapshot
+	-> Stored in S3
+	-> Regional Specific
+	-> Private by default can make public
+	-> Copy from region to region in same account
+	-> Max size is 50GB
+	-> Cant be attached to EC2 directly
+
+LifeCycle Manager:
+------------------
+ These are used to create backup based on give time interval
+	-> Automates incremental backup
+	-> User lifecyle policy
+	-> can also use retention policy
+	
+Exercise for Snapshot:
+1. Create EC2(1a)
+2. Create volume(1a)
+3. Create snapshot for the volume(1a)
+4. Create EC2(1b)
+5. Create volume(1b) from the snapshot
+6. Attach the volume(1b) in the EC2(1b)
+7. Check the data in EC2(1b)

@@ -1,0 +1,89 @@
+Docker
+------
+Package all the softwares and application code in one container
+It is a containerization software
+
+Dockerfile --build-->  Docker Image --run--> Docker Container
+
+
+Dockerfile: 
+----------
+Dockerfile is file which contains instructions to create an image.
+
+DockerImage:
+-----------
+It's a package which contains everything(Softwares+ENV+Application Code) to run your application.
+
+DockerContainer:
+---------------
+Run time instance of an image.
+
+DockerRepo/Registry:
+-------------------
+We can store and share the docker images in like Docker hub, ECR, Nexus.
+
+
+How docker works internally:
+---------------------------
+1. When do pull a image or run a instance
+2. Docker daemon will look for the image
+3. If present in local it will containarize the image
+4. If not present it will connect to the repo like docker hub
+5. Download the image
+6. Then run as container
+7. The show the response to the client
+
+
+Install Docker
+--------------
+
+sudo yum install docker -y
+sudo service docker start
+sudo usermod -aG docker ec2-user
+Note: Restart the session
+
+
+Docker file contains:
+--------------------
+
+FROM           - Indicates base image
+MAINTAINER     - Who is author
+COPY	       - Copy files / folders to image while creating an image
+ADD	       - Used to copy/download/extract tar files
+RUN  	       - Used to execute commands while creating image
+CMD	       - Used to execute commands while creating container
+ENTRYPOINT     - Used to execute commands while creating container but can overider unlike CMD
+ENV	       - Change/set Working Directory for an image or container
+WORKDIR	       - Set Environment Variables in key value pair
+ENV	       - Set Environment Variables in key value pair
+LABEL	       - Add meta data for our image in key value pair
+ARG            - Used as variables live(name=value)
+USER	       - Set user for an image
+EXPOSE         - Represents on which port number our container is running
+VOLUME         - Used for data storage
+
+Note: zip files we have to extract manually using ADD
+
+
+
+
+Docker Commands
+--------------
+sudo service docker start
+docker info
+docker images
+docker container ls / docker ps
+docker ps -a
+docker build -t <image-name> .
+docker build -t imageone --build-arg ARGname=value
+docker build -f <custom_dockerfile_name> -t <image-name> .
+docker pull <image-name>
+docker run -d -p ext:int <image-name>
+docker stop <container-id>
+docker stop $(docker ps -aq)
+docker rm <container-id>
+docker rm -f <container-id>
+docker system prune -a
+docker login
+docker tag <image-name> <tag-name>
+docker push <tag-name>
