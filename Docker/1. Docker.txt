@@ -81,9 +81,12 @@ docker pull <image-name>
 docker run -d -p ext:int <image-name>
 docker stop <container-id>
 docker stop $(docker ps -aq)
+docker restart $(docker ps -aq)
+docker rm -f $(docker ps -aq)
 docker rm <container-id>
 docker rm -f <container-id>
 docker system prune -a
 docker login
 docker tag <image-name> <tag-name>
 docker push <tag-name>
+docker inspect <image-name>

@@ -1,0 +1,55 @@
+Docker Volumes
+--------------
+
+Used to persist the data
+Can share the data among multiple Docker containers
+
+docker volume --help
+docker volume create <volume-name>
+docker volume ls
+docker volume inspect <volume-name>
+docker volume rm <volume-name>
+docker volume prune
+
+Task:
+-----
+
+First do without mounting then do with mounting
+
+docker pull nginx
+docker run --name=webapp1 --mount source=new_vol,destination=/usr/share/nginx/html -d -p 80:80 nginx
+docker exec -it webapp1 bash
+cd /usr/share/nginx/html
+echo "Webapp1" > index.html
+
+then,
+docker stop <container-id>
+
+
+
+Host Directory Mounting to Docker Container
+-------------------------------------------
+
+# Create Directory in host machine
+$ mkdir /tmp/nginx/html
+
+# Run Docker container for nginx image with directory mouting (container name is C1)
+$ docker run -d -p 80:80 -v /tmp/nginx/html:/usr/share/nginx/html --name c1 nginx:latest
+
+# See the containers which are running (c1 should be running)
+$ docker container ls
+
+Note: Acess Nginx webserver using Host Machine Public IP 
+(it will not be displayed bcz index.html  file not available in container)
+
+# Goto Mounted directory in host machine
+$ cd /tmp/nginx/html
+
+-> Create index.html file
+$ vi index.html   
+
+Note: write the content in index.html file then save it close it
+
+-> Access Nginx webserver in browser (Changes will be reflected)
+
+Note: We have created index.html file in host machine mounted directory it is reflecting in container

@@ -1,0 +1,6 @@
+Docker Compose
+--------------
+
+To solve Running multiple containers manually for all apis, Docker Compose came into picture
+We can define & deploy multi container based applications easily
+We will give input to docker compose tool using YAML file to run multiple containers

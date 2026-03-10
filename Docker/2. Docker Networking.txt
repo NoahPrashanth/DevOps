@@ -1,0 +1,113 @@
+Docker Network
+--------------
+Used to communicate among containers
+One container we can attach to multiple networks
+By default 3 docker networks will be configured
+
+	1) none
+	2) host
+	3) bridge
+
+
+Docker Network Drivers
+----------------------
+
+1) Bridge(default) 
+	-> Application runs in standalone container
+2) Host
+	-> The container will not get any IP address
+	-> Application runs in standalone container
+	-> seful when we are running our containers with large no.of ports
+3) None
+	-> Containers will have no access to network
+4) Overlay
+	-> Will be used when we have Docker Swarm cluster to orchestrate our Docker containers
+5) Macvlan
+	-> Will assign a MAC address to a container and make our device as Physical	
+	-> Using this MAC address Docker engine routes the traffic to a particular route
+
+
+Docker Networking Commands:
+--------------------------
+
+docker network ls
+docker network create --driver <network-name> <custom-network-name>
+docker run --name <cntnr-name> -d --network <custom-network-name> -p ext:int <image-name>
+docker inspect <image-name>
+docker network inspect <custom-network-name>
+
+
+
+Task: Check connectivity between 2 containers
+---------------------------------------------
+
+
+docker run --name nginx1 -d --network <custom-network-name> -p 8080:80 nginx
+
+docker run --name nginx2 -d --network <custom-network-name> -p 9090:80 nginx
+
+# Get IP address of Docker Container
+Synax : $ docker inspect -f  '{{range.NetworkSettings.Networks}} {{.IPAddress}}{{end}}'  <container-id-or-name>
+
+# Get into container
+docker exec -it nginx1 /bin/bash
+apt-get install iputils-ping
+ping <IP of nginx2>
+
+Do the same above in nginx2 and check connectivity
+
+
+Running Containers using Host Network Driver
+--------------------------------------------
+-> When we use Host Network driver port mapping is not required
+
+$ docker run --name nginx3 --network host -d nginx
+
+Note: If you observer we are running nginx container without port mapping because we are using Host Network Driver
+
+
+
+Running Containers Using Macvlan Network Driver:
+-----------------------------------------------
+
+In Docker, a common question that usually comes up is “How do I expose my containers directly to my local physical network?”  This is especially so when you are running monitoring applications that are collecting network statistics and want to connect container to legacy applications. A possible solution to this question is to create and implement the macvlan network type.
+
+Macvlan networks are special virtual networks that allow you to create “clones” of the physical network interface attached to your Linux servers and attach containers directly your LAN. To ensure this happens, simple designate a physical network interface on your server to a macvlan network which has its own subnet and gateway.
+
+
+# Get IP address of Docker Host Machine
+
+$ ifconfig
+
+Note : Take ipaddress from eth0
+
+inet : 172.31.13.126
+
+Subnet : 172.31.13.0/24
+
+Gateway : 172.31.13.1
+
+# Create macvlan network using subnet and gateway
+$ docker network create -d macvlan \
+    --subnet=172.31.13.0/24 \
+    --gateway=172.31.13.1  \
+    -o parent=eth0 \
+     my-macvlan-network
+	 
+
+# Check the network created
+$ docker network ls
+
+# inspect network created
+$ docker network inspect my-macvlan-network
+
+# Run docker container using macvlan network we have created	 
+	 
+$ docker run --rm -itd \
+--network=my-macvlan-network \
+--ip=172.31.13.110 \
+  alpine:latest \
+  /bin/sh	 
+
+# inspect network created
+$ docker network inspect my-macvlan-networ
